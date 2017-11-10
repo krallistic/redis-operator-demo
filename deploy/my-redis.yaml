@@ -1,0 +1,7 @@
+
+apiVersion: krallistic.com/v1alpha1
+kind: RedisDB
+metadata:
+  name: custom-redis-cluster
+spec:
+  user: container-conf
