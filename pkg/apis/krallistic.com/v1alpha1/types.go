@@ -19,8 +19,11 @@ type RedisDB struct {
 type RedisDBSpec struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
+	Replicas int    `json:"replicas"`
 }
 
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 // RedisDBList is a list of RedisDB resources
 type RedisDBList struct {
 	metav1.TypeMeta `json:",inline"`
