@@ -30,7 +30,7 @@ func main() {
 		glog.Fatalf("Error building example clientset: %v", err)
 	}
 
-	list, err := crClient.KrallisticV1Alpha1().RedisDB("default").List(metav1.ListOptions{})
+	list, err := crClient.KrallisticV1alpha1().RedisDBs("default").List(metav1.ListOptions{})
 	if err != nil {
 		glog.Fatalf("Error listing all databases: %v", err)
 	}
