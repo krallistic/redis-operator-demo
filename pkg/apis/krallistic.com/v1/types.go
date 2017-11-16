@@ -1,4 +1,4 @@
-package v1alpha1
+package v1
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -6,28 +6,31 @@ import (
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +resource:path=redisdb
 
 // RedisDB describes a RedisDB.
-type RedisDB struct {
+type Redisdb struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec RedisDBSpec `json:"spec"`
+	Spec RedisdbSpec `json:"spec"`
 }
 
 // RedisDBSpec is the spec for a Foo resource
-type RedisDBSpec struct {
+type RedisdbSpec struct {
 	User     string `json:"user"`
 	Password string `json:"password"`
-	Replicas int    `json:"replicas"`
+	Replicas *int32 `json:"replicas"`
+	Name     string `json:"name"`
 }
 
-// +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +resource:path=redisdbs
+
 // RedisDBList is a list of RedisDB resources
-type RedisDBList struct {
+type RedisdbList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
 
-	Items []RedisDB `json:"items"`
+	Items []Redisdb `json:"items"`
 }

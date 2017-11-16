@@ -3,7 +3,7 @@ Created by codegen
 */package scheme
 
 import (
-	krallisticv1alpha1 "github.com/krallistic/redis-operator-demo/pkg/apis/krallistic.com/v1alpha1"
+	krallisticv1 "github.com/krallistic/redis-operator-demo/pkg/apis/krallistic.com/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -34,6 +34,6 @@ func init() {
 // After this, RawExtensions in Kubernetes types will serialize kube-aggregator types
 // correctly.
 func AddToScheme(scheme *runtime.Scheme) {
-	krallisticv1alpha1.AddToScheme(scheme)
+	krallisticv1.AddToScheme(scheme)
 
 }

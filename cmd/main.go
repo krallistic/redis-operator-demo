@@ -2,40 +2,52 @@ package main
 
 import (
 	"flag"
-	"fmt"
+	"time"
 
 	"github.com/golang/glog"
+	clientset "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned"
+	informers "github.com/krallistic/redis-operator-demo/pkg/client/informers/externalversions"
 
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/sample-controller/pkg/signals"
 
-	krallisticcomclientset "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned"
+	c "github.com/krallistic/redis-operator-demo/controller"
 )
 
 var (
-	kuberconfig = flag.String("kubeconfig", "", "Path to a kubeconfig. Only required if out-of-cluster.")
-	master      = flag.String("master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
+	kubeconfig = flag.String("kubeconfig", "/Users/jakobkaralus/.kube/config", "Path to a kubeconfig. Only required if out-of-cluster.")
+	masterURL  = flag.String("master", "", "The address of the Kubernetes API server. Overrides any value in kubeconfig. Only required if out-of-cluster.")
 )
 
 func main() {
-	flag.Parse()
 
-	cfg, err := clientcmd.BuildConfigFromFlags(*master, *kuberconfig)
+	// set up signals so we handle the first shutdown signal gracefully
+	stopCh := signals.SetupSignalHandler()
+
+	cfg, err := clientcmd.BuildConfigFromFlags(*masterURL, *kubeconfig)
 	if err != nil {
-		glog.Fatalf("Error building kubeconfig: %v", err)
+		glog.Fatalf("Error building kubeconfig: %s", err.Error())
 	}
 
-	crClient, err := krallisticcomclientset.NewForConfig(cfg)
+	kubeClient, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
-		glog.Fatalf("Error building example clientset: %v", err)
+		glog.Fatalf("Error building kubernetes clientset: %s", err.Error())
 	}
 
-	list, err := crClient.KrallisticV1alpha1().RedisDBs("default").List(metav1.ListOptions{})
+	redisClient, err := clientset.NewForConfig(cfg)
 	if err != nil {
-		glog.Fatalf("Error listing all databases: %v", err)
+		glog.Fatalf("Error building example clientset: %s", err.Error())
 	}
 
-	for _, db := range list.Items {
-		fmt.Printf("database %s with user %q\n", db.Name, db.Spec.User)
+	redisInformerFactory := informers.NewSharedInformerFactory(redisClient, time.Second*30)
+
+	controller := c.NewController(kubeClient, redisClient, redisInformerFactory)
+
+	go redisInformerFactory.Start(stopCh)
+
+	if err = controller.Run(stopCh); err != nil {
+		glog.Fatalf("Error running controller: %s", err.Error())
 	}
+
 }

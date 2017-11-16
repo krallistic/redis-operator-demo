@@ -1,30 +1,30 @@
 /*
 Created by codegen
-*/package v1alpha1
+*/package v1
 
 import (
-	v1alpha1 "github.com/krallistic/redis-operator-demo/pkg/apis/krallistic.com/v1alpha1"
+	v1 "github.com/krallistic/redis-operator-demo/pkg/apis/krallistic.com/v1"
 	"github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/scheme"
 	serializer "k8s.io/apimachinery/pkg/runtime/serializer"
 	rest "k8s.io/client-go/rest"
 )
 
-type KrallisticV1alpha1Interface interface {
+type KrallisticV1Interface interface {
 	RESTClient() rest.Interface
-	RedisDBsGetter
+	RedisdbsGetter
 }
 
-// KrallisticV1alpha1Client is used to interact with features provided by the krallistic.com group.
-type KrallisticV1alpha1Client struct {
+// KrallisticV1Client is used to interact with features provided by the krallistic.com group.
+type KrallisticV1Client struct {
 	restClient rest.Interface
 }
 
-func (c *KrallisticV1alpha1Client) RedisDBs(namespace string) RedisDBInterface {
-	return newRedisDBs(c, namespace)
+func (c *KrallisticV1Client) Redisdbs(namespace string) RedisdbInterface {
+	return newRedisdbs(c, namespace)
 }
 
-// NewForConfig creates a new KrallisticV1alpha1Client for the given config.
-func NewForConfig(c *rest.Config) (*KrallisticV1alpha1Client, error) {
+// NewForConfig creates a new KrallisticV1Client for the given config.
+func NewForConfig(c *rest.Config) (*KrallisticV1Client, error) {
 	config := *c
 	if err := setConfigDefaults(&config); err != nil {
 		return nil, err
@@ -33,12 +33,12 @@ func NewForConfig(c *rest.Config) (*KrallisticV1alpha1Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &KrallisticV1alpha1Client{client}, nil
+	return &KrallisticV1Client{client}, nil
 }
 
-// NewForConfigOrDie creates a new KrallisticV1alpha1Client for the given config and
+// NewForConfigOrDie creates a new KrallisticV1Client for the given config and
 // panics if there is an error in the config.
-func NewForConfigOrDie(c *rest.Config) *KrallisticV1alpha1Client {
+func NewForConfigOrDie(c *rest.Config) *KrallisticV1Client {
 	client, err := NewForConfig(c)
 	if err != nil {
 		panic(err)
@@ -46,13 +46,13 @@ func NewForConfigOrDie(c *rest.Config) *KrallisticV1alpha1Client {
 	return client
 }
 
-// New creates a new KrallisticV1alpha1Client for the given RESTClient.
-func New(c rest.Interface) *KrallisticV1alpha1Client {
-	return &KrallisticV1alpha1Client{c}
+// New creates a new KrallisticV1Client for the given RESTClient.
+func New(c rest.Interface) *KrallisticV1Client {
+	return &KrallisticV1Client{c}
 }
 
 func setConfigDefaults(config *rest.Config) error {
-	gv := v1alpha1.SchemeGroupVersion
+	gv := v1.SchemeGroupVersion
 	config.GroupVersion = &gv
 	config.APIPath = "/apis"
 	config.NegotiatedSerializer = serializer.DirectCodecFactory{CodecFactory: scheme.Codecs}
@@ -66,7 +66,7 @@ func setConfigDefaults(config *rest.Config) error {
 
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
-func (c *KrallisticV1alpha1Client) RESTClient() rest.Interface {
+func (c *KrallisticV1Client) RESTClient() rest.Interface {
 	if c == nil {
 		return nil
 	}

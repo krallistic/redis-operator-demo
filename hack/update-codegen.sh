@@ -9,5 +9,5 @@ CODEGEN_PKG=${CODEGEN_PKG:-$(cd ${SCRIPT_ROOT}; ls -d -1 ./vendor/k8s.io/code-ge
 
 vendor/k8s.io/code-generator/generate-groups.sh all \
   github.com/krallistic/redis-operator-demo/pkg/client github.com/krallistic/redis-operator-demo/pkg/apis \
-  krallistic.com:v1alpha1 \
+  krallistic.com:v1 \
   --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.txt

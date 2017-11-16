@@ -4,7 +4,7 @@ Created by codegen
 
 import (
 	glog "github.com/golang/glog"
-	krallisticv1alpha1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1alpha1"
+	krallisticv1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -12,27 +12,27 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	KrallisticV1alpha1() krallisticv1alpha1.KrallisticV1alpha1Interface
+	KrallisticV1() krallisticv1.KrallisticV1Interface
 	// Deprecated: please explicitly pick a version if possible.
-	Krallistic() krallisticv1alpha1.KrallisticV1alpha1Interface
+	Krallistic() krallisticv1.KrallisticV1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	krallisticV1alpha1 *krallisticv1alpha1.KrallisticV1alpha1Client
+	krallisticV1 *krallisticv1.KrallisticV1Client
 }
 
-// KrallisticV1alpha1 retrieves the KrallisticV1alpha1Client
-func (c *Clientset) KrallisticV1alpha1() krallisticv1alpha1.KrallisticV1alpha1Interface {
-	return c.krallisticV1alpha1
+// KrallisticV1 retrieves the KrallisticV1Client
+func (c *Clientset) KrallisticV1() krallisticv1.KrallisticV1Interface {
+	return c.krallisticV1
 }
 
 // Deprecated: Krallistic retrieves the default version of KrallisticClient.
 // Please explicitly pick a version.
-func (c *Clientset) Krallistic() krallisticv1alpha1.KrallisticV1alpha1Interface {
-	return c.krallisticV1alpha1
+func (c *Clientset) Krallistic() krallisticv1.KrallisticV1Interface {
+	return c.krallisticV1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -51,7 +51,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.krallisticV1alpha1, err = krallisticv1alpha1.NewForConfig(&configShallowCopy)
+	cs.krallisticV1, err = krallisticv1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.krallisticV1alpha1 = krallisticv1alpha1.NewForConfigOrDie(c)
+	cs.krallisticV1 = krallisticv1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -77,7 +77,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.krallisticV1alpha1 = krallisticv1alpha1.New(c)
+	cs.krallisticV1 = krallisticv1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

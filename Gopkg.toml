@@ -13,6 +13,11 @@ required = ["k8s.io/code-generator/cmd/client-gen"]
   name = "k8s.io/code-generator"
   branch = "release-1.8"
 
+
+#Yeah yeah iam lazy, i could write that myself...
+[[constraint]]
+  name = "k8s.io/sample-controller"
+
 # goland/dep does not follow k8s.io/code-generator's Godeps.json and gengo's master
 # version does not work with release-1.8 k8s.io/code-generator. So we have to
 # override it.

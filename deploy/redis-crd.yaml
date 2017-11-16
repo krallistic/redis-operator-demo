@@ -5,12 +5,10 @@ metadata:
 spec:
   group: krallistic.com
   names:
-    kind: redisdb
-    listKind: redisdbList
+    kind: Redisdb
     plural: redisdbs
     shortNames:
     - redis
-    - redisdbs
     - red
   scope: Namespaced
   version: v1

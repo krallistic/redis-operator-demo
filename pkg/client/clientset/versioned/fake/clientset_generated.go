@@ -4,8 +4,8 @@ Created by codegen
 
 import (
 	clientset "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned"
-	krallisticv1alpha1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1alpha1"
-	fakekrallisticv1alpha1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1alpha1/fake"
+	krallisticv1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1"
+	fakekrallisticv1 "github.com/krallistic/redis-operator-demo/pkg/client/clientset/versioned/typed/krallistic/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -46,12 +46,12 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 
 var _ clientset.Interface = &Clientset{}
 
-// KrallisticV1alpha1 retrieves the KrallisticV1alpha1Client
-func (c *Clientset) KrallisticV1alpha1() krallisticv1alpha1.KrallisticV1alpha1Interface {
-	return &fakekrallisticv1alpha1.FakeKrallisticV1alpha1{Fake: &c.Fake}
+// KrallisticV1 retrieves the KrallisticV1Client
+func (c *Clientset) KrallisticV1() krallisticv1.KrallisticV1Interface {
+	return &fakekrallisticv1.FakeKrallisticV1{Fake: &c.Fake}
 }
 
-// Krallistic retrieves the KrallisticV1alpha1Client
-func (c *Clientset) Krallistic() krallisticv1alpha1.KrallisticV1alpha1Interface {
-	return &fakekrallisticv1alpha1.FakeKrallisticV1alpha1{Fake: &c.Fake}
+// Krallistic retrieves the KrallisticV1Client
+func (c *Clientset) Krallistic() krallisticv1.KrallisticV1Interface {
+	return &fakekrallisticv1.FakeKrallisticV1{Fake: &c.Fake}
 }
